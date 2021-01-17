@@ -20,40 +20,47 @@ function Item(props: {
     <ListWrapper>
       {props.itemList?.map((el: ItemInterface, index) => {
         return (
-          <li key={`thisKey${el.id + index}`}>
-            <input
-              type="checkbox"
-              onClick={() => props.todoCheck(el.id, el.todoChecking)}
-            />
+          <EachList key={`thisKey${el.id + index}`}>
             <ListCheck forlining={el.todoChecking}>
-              <span>{el.title}</span>
-              {el.check ? (
+              <TitleAndChekcWrapper>
                 <input
-                  type="text"
-                  value={
-                    props.changeValue.length > 0
-                      ? props.changeValue
-                      : el.typedValue
-                  }
-                  onChange={(e) => props.modifyInput(e)}
+                  type="checkbox"
+                  onClick={() => props.todoCheck(el.id, el.todoChecking)}
                 />
-              ) : (
-                <span>{el.typedValue}</span>
-              )}
-              {el.check ? (
-                <button
-                  onClick={() =>
-                    props.doneFunc(el.id, el.typedValue, props.changeValue)
-                  }
-                >
-                  DONE
+                {el.check ? (
+                  <input
+                    type="text"
+                    value={
+                      props.changeValue.length > 0
+                        ? props.changeValue
+                        : el.typedValue
+                    }
+                    onChange={(e) => props.modifyInput(e)}
+                  />
+                ) : (
+                  <span>{el.typedValue}</span>
+                )}
+              </TitleAndChekcWrapper>
+              <ButtonWrapper forlining={el.todoChecking}>
+                {el.check ? (
+                  <button
+                    onClick={() =>
+                      props.doneFunc(el.id, el.typedValue, props.changeValue)
+                    }
+                  >
+                    <i className="fas fa-check-circle"></i>
+                  </button>
+                ) : (
+                  <button onClick={() => props.modifyFunc(el.id)}>
+                    <i className="fas fa-pen"></i>
+                  </button>
+                )}
+                <button onClick={() => props.deleteFunc(el.id)}>
+                  <i className="far fa-trash-alt"></i>
                 </button>
-              ) : (
-                <button onClick={() => props.modifyFunc(el.id)}>MODIFY</button>
-              )}
-              <button onClick={() => props.deleteFunc(el.id)}>DELETE</button>
+              </ButtonWrapper>
             </ListCheck>
-          </li>
+          </EachList>
         );
       })}
     </ListWrapper>
@@ -61,11 +68,61 @@ function Item(props: {
 }
 
 const ListWrapper = styled.ul`
-  background-color: red;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: spac;
+  align-items: center;
+  padding: 0;
+
+  button {
+    background-color: white;
+    border: none;
+  }
+`;
+
+const ButtonWrapper = styled.div<{ forlining: boolean | undefined }>`
+  margin-right: 10px;
+
+  button {
+    background-color: ${(props) => (props.forlining ? "whitesmoke" : "white")};
+  }
+`;
+
+const TitleAndChekcWrapper = styled.div`
+  margin-left: 10px;
+  input {
+    margin-left: 10px;
+  }
+  span {
+    margin-left: 10px;
+  }
 `;
 
 const ListCheck = styled.div<{ forlining: boolean | undefined }>`
-  background-color: ${(props) => (props.forlining ? "blue" : "black")};
+  background-color: ${(props) => (props.forlining ? "whitesmoke" : "white")};
+  text-decoration: ${(props) => (props.forlining ? "line-through" : "none")};
+
+  display: flex;
+  justify-content: space-between;
+
+  padding: 10px;
+`;
+
+const EachList = styled.li`
+  width: 100%;
+  /* padding: 20px 0; */
+  border-top: 1px solid black;
+  color: #489cc1;
+
+  &:nth-child(odd) {
+    border-top: 1px solid #f7f7f7;
+    border-bottom: 1px solid #f7f7f7;
+  }
+  &:nth-child(even) {
+    border-top: none;
+    border-bottom: 1px solid #f7f7f7;
+  }
 `;
 
 export default Item;

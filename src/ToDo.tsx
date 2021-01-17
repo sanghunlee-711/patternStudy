@@ -1,7 +1,9 @@
 import React from "react";
 import Item from "./components/Item";
-import { useState, useEffect } from "react";
+import ProgressBar from "./components/ProgressBar";
+import { useState, useEffect, useCallback } from "react";
 import api from "./utility/api";
+import styled from "styled-components";
 import { ItemInterface, ItemListInterFace } from "./interface/ItemInterface";
 
 //Observer Pattern 적용
@@ -15,6 +17,7 @@ function ToDo(): React.ReactElement {
   const [itemList, setItemList] = useState<ItemListInterFace>([]);
   const [text, setText] = useState<string>("");
   const [changeValue, setChangeValue] = useState<string>("");
+  const [count, setCount] = useState<number>(0);
   useEffect(() => {
     // call data.json and setState Session
     let dataDir = "./data/data.json";
@@ -82,7 +85,7 @@ function ToDo(): React.ReactElement {
         el.id === id
           ? {
               ...el,
-              typedValue: changeValue,
+              typedValue: changeValue.length > 0 ? changeValue : el.typedValue,
               check: false,
             }
           : el
@@ -103,6 +106,7 @@ function ToDo(): React.ReactElement {
             : el
         )
       );
+      todoCount(itemList);
     } else {
       setItemList(
         itemList?.map((el) =>
@@ -114,27 +118,96 @@ function ToDo(): React.ReactElement {
             : el
         )
       );
+      todoCount(itemList);
     }
   };
 
+  const todoCount = (itemList: ItemListInterFace) => {
+    let doCount = 0;
+    let doLen = itemList?.length !== undefined ? itemList.length : 1;
+    itemList?.forEach((el) =>
+      el.todoChecking ? (doCount = doCount + 1) : doCount
+    );
+    setCount((doCount / doLen) * 100);
+  };
+
   return (
-    <div className="ToDo" onClick={() => checkfunction()}>
-      {/* submit button click -> it'll be rerender  */}
-      <input type="text" value={text} onChange={(e) => inputChange(e)} />
-      {text}
-      <input type="submit" onClick={() => makeNew(text)} />
-      <Item
-        item={item}
-        itemList={itemList}
-        deleteFunc={deleteFunc}
-        modifyFunc={modifyFunc}
-        doneFunc={doneFunc}
-        changeValue={changeValue}
-        modifyInput={modifyInput}
-        todoCheck={todoCheck}
-      />
-    </div>
+    <TodoContainer onClick={() => checkfunction()}>
+      <TodoWrapper>
+        <TitleWrapper>
+          <Title>TODOLIST</Title>
+        </TitleWrapper>
+        <InputWrapper>
+          <input type="text" value={text} onChange={(e) => inputChange(e)} />
+          <i
+            className="fas fa-plus-square fa-3x"
+            onClick={() => makeNew(text)}
+          ></i>
+        </InputWrapper>
+        <Item
+          item={item}
+          itemList={itemList}
+          deleteFunc={deleteFunc}
+          modifyFunc={modifyFunc}
+          doneFunc={doneFunc}
+          changeValue={changeValue}
+          modifyInput={modifyInput}
+          todoCheck={todoCheck}
+        />
+        <ProgressBar count={count} itemList={itemList?.length} />
+      </TodoWrapper>
+    </TodoContainer>
   );
 }
+
+const TodoContainer = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #489cc1;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const TodoWrapper = styled.div`
+  position: static;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  background-color: #ffff;
+  width: 60vw;
+  height: 70vh;
+`;
+
+const InputWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  input {
+    width: 70%;
+    height: 40px;
+    margin-left: 10px;
+    border: 1px solid goldenrod;
+  }
+  i {
+    margin-left: 10px;
+    /* background-color: #f7f7f7; */
+    color: #489cc1;
+  }
+`;
+
+const Title = styled.span`
+  color: #525e65;
+  font-size: 40px;
+  text-align: center;
+  margin: 20px 0;
+`;
 
 export default ToDo;
