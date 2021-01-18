@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/patternStudy/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/patternStudy/static/js/main.cc01a106.chunk.js",
+    "main.js.map": "/patternStudy/static/js/main.cc01a106.chunk.js.map",
+    "runtime-main.js": "/patternStudy/static/js/runtime-main.339137b6.js",
+    "runtime-main.js.map": "/patternStudy/static/js/runtime-main.339137b6.js.map",
+    "static/js/2.a3608bd1.chunk.js": "/patternStudy/static/js/2.a3608bd1.chunk.js",
+    "static/js/2.a3608bd1.chunk.js.map": "/patternStudy/static/js/2.a3608bd1.chunk.js.map",
+    "static/js/3.d2f82b80.chunk.js": "/patternStudy/static/js/3.d2f82b80.chunk.js",
+    "static/js/3.d2f82b80.chunk.js.map": "/patternStudy/static/js/3.d2f82b80.chunk.js.map",
+    "index.html": "/patternStudy/index.html",
+    "static/css/main.6dea0f05.chunk.css.map": "/patternStudy/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.a3608bd1.chunk.js.LICENSE.txt": "/patternStudy/static/js/2.a3608bd1.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.339137b6.js",
+    "static/js/2.a3608bd1.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.cc01a106.chunk.js"
+  ]
+}
