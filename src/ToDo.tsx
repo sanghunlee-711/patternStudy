@@ -38,6 +38,10 @@ function ToDo(): React.ReactElement {
     setText(e.target.value);
   };
 
+  useEffect(()=>{
+    todoCount(itemList)
+  },[itemList])
+
   const makeNew = (text: string) => {
     setItemList(
       itemList?.concat({
@@ -121,6 +125,8 @@ function ToDo(): React.ReactElement {
       todoCount(itemList);
     }
   };
+
+
 
   const todoCount = (itemList: ItemListInterFace) => {
     let doCount = 0;
