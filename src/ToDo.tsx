@@ -37,6 +37,10 @@ function ToDo(): React.ReactElement {
     todoCount(itemList);
   }, [itemList]);
 
+  useEffect(()=>{
+    todoCount(itemList)
+  },[itemList])
+
   const makeNew = (text: string) => {
     setItemList(
       itemList?.concat({
@@ -119,6 +123,8 @@ function ToDo(): React.ReactElement {
       );
     }
   };
+
+
 
   const todoCount = (itemList: ItemListInterFace) => {
     let doCount = 0;

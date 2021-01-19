@@ -18,3 +18,4 @@ const api = (url: string): Promise<ItemListInterFace> => {
 };
 
 export default api;
+
