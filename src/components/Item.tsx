@@ -6,12 +6,8 @@ function Item(props: {
   item: ItemInterface;
   itemList: ItemListInterFace;
   deleteFunc: (id: number) => void;
-  modifyFunc: (id: number) => void;
-  doneFunc: (
-    id: number,
-    value: string | undefined,
-    changeValue: string
-  ) => void;
+  modifyFunc: (id: number, value: string) => void;
+  doneFunc: (id: number, value: string, changeValue: string) => void;
   changeValue: string;
   modifyInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   todoCheck: (id: number, todoChecking: boolean | undefined) => void;
@@ -23,17 +19,22 @@ function Item(props: {
           <EachList key={`thisKey${el.id + index}`}>
             <ListCheck forlining={el.todoChecking}>
               <TitleAndChekcWrapper>
-                <input
-                  type="checkbox"
-                  onClick={() => props.todoCheck(el.id, el.todoChecking)}
-                />
+                <div onClick={() => props.todoCheck(el.id, el.todoChecking)}>
+                  {el.todoChecking ? (
+                    <i className="far fa-check-square"></i>
+                  ) : (
+                    <i className="far fa-square"></i>
+                  )}
+                </div>
                 {el.check ? (
                   <input
                     type="text"
+                    name="modify"
                     value={
-                      props.changeValue.length > 0
-                        ? props.changeValue
-                        : el.typedValue
+                      // props.changeValue.length > 0
+                      //   ? props.changeValue
+                      //   : el.typedValue
+                      props.changeValue
                     }
                     onChange={(e) => props.modifyInput(e)}
                   />
@@ -51,11 +52,14 @@ function Item(props: {
                     <i className="fas fa-check-circle"></i>
                   </button>
                 ) : (
-                  <button onClick={() => props.modifyFunc(el.id)}>
+                  <button
+                    name="done"
+                    onClick={() => props.modifyFunc(el.id, el.typedValue)}
+                  >
                     <i className="fas fa-pen"></i>
                   </button>
                 )}
-                <button onClick={() => props.deleteFunc(el.id)}>
+                <button name="delete" onClick={() => props.deleteFunc(el.id)}>
                   <i className="far fa-trash-alt"></i>
                 </button>
               </ButtonWrapper>
@@ -90,6 +94,7 @@ const ButtonWrapper = styled.div<{ forlining: boolean | undefined }>`
 `;
 
 const TitleAndChekcWrapper = styled.div`
+  display: flex;
   margin-left: 10px;
   input {
     margin-left: 10px;

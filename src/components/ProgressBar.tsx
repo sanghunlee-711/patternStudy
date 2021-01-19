@@ -12,7 +12,12 @@ function ProgressBar(props: {
         <ProgressBarRange count={props.count}></ProgressBarRange>
       </ProgressBarWrapper>
       <ProgressNum>
-        {props.count.toLocaleString(undefined, { maximumFractionDigits: 3 })} %
+        {isNaN(props.count)
+          ? 0
+          : props.count.toLocaleString(undefined, {
+              maximumFractionDigits: 3,
+            })}
+        %
       </ProgressNum>
     </ProgressBarContainer>
   );
@@ -38,7 +43,10 @@ const ProgressBarWrapper = styled.div`
 const ProgressBarRange = styled.div<{ count: number }>`
   transition: all 0.5s ease-in-out;
   background-color: #f7e43b;
-  width: ${(props) => props.count}%;
+  width: ${(props) =>
+    props.count === undefined || props.count === null || isNaN(props.count)
+      ? 0
+      : props.count}%;
   height: 100%;
   border-radius: 4px;
 
@@ -48,6 +56,19 @@ const ProgressBarRange = styled.div<{ count: number }>`
     position: absolute;
     padding: 15px 0px 15px 30px;
     margin: auto 0;
+  }
+  animation-name: chargeShowing;
+  animation-duration: 3s;
+
+  @keyframes chargeShowing {
+    from {
+      background-color: goldenrod;
+      width: 100%;
+    }
+    to {
+      background-color: white;
+      width: 0;
+    }
   }
 `;
 

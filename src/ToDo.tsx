@@ -18,6 +18,7 @@ function ToDo(): React.ReactElement {
   const [text, setText] = useState<string>("");
   const [changeValue, setChangeValue] = useState<string>("");
   const [count, setCount] = useState<number>(0);
+
   useEffect(() => {
     // call data.json and setState Session
     let dataDir = "./data/data.json";
@@ -32,11 +33,9 @@ function ToDo(): React.ReactElement {
       });
   }, []);
 
-  const checkfunction = () => {};
-
-  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  };
+  useEffect(() => {
+    todoCount(itemList);
+  }, [itemList]);
 
   useEffect(()=>{
     todoCount(itemList)
@@ -59,8 +58,8 @@ function ToDo(): React.ReactElement {
     setItemList(itemList?.filter((el: ItemInterface) => el.id !== id));
   };
 
-  const modifyFunc = (id: number) => {
-    console.log(id);
+  const modifyFunc = (id: number, value: string) => {
+    setChangeValue(value);
     setItemList(
       itemList?.map((el) =>
         el.id === id
@@ -74,16 +73,17 @@ function ToDo(): React.ReactElement {
   };
 
   const modifyInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChangeValue(e.target.value);
+    const {
+      target: { name, value },
+    } = e;
+    if (String(name) === "modify") {
+      setChangeValue(value);
+    } else if (String(name) === "make") {
+      setText(value);
+    }
   };
 
-  const doneFunc = (
-    id: number,
-    value: string | undefined,
-    changeValue: string
-  ) => {
-    console.log(id, value);
-
+  const doneFunc = (id: number, value: string, changeValue: string) => {
     setItemList(
       itemList?.map((el) =>
         el.id === id
@@ -110,7 +110,6 @@ function ToDo(): React.ReactElement {
             : el
         )
       );
-      todoCount(itemList);
     } else {
       setItemList(
         itemList?.map((el) =>
@@ -122,7 +121,6 @@ function ToDo(): React.ReactElement {
             : el
         )
       );
-      todoCount(itemList);
     }
   };
 
@@ -138,13 +136,18 @@ function ToDo(): React.ReactElement {
   };
 
   return (
-    <TodoContainer onClick={() => checkfunction()}>
+    <TodoContainer>
       <TodoWrapper>
         <TitleWrapper>
           <Title>TODOLIST</Title>
         </TitleWrapper>
         <InputWrapper>
-          <input type="text" value={text} onChange={(e) => inputChange(e)} />
+          <input
+            name="make"
+            type="text"
+            value={text}
+            onChange={(e) => modifyInput(e)}
+          />
           <i
             className="fas fa-plus-square fa-3x"
             onClick={() => makeNew(text)}
@@ -214,6 +217,21 @@ const Title = styled.span`
   font-size: 40px;
   text-align: center;
   margin: 20px 0;
+  /* position: absolute; */
+  animation-duration: 3s;
+  animation-name: slideIn;
+
+  @keyframes slideIn {
+    from {
+      margin-left: 100%;
+      width: 300%;
+    }
+
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+  }
 `;
 
 export default ToDo;
