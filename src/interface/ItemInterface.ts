@@ -1,6 +1,6 @@
 export interface ItemInterface {
   title?: string;
-  typedValue?: string;
+  typedValue: string;
   id: number;
   check?: boolean;
   todoChecking?: boolean;
